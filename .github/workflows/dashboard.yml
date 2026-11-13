@@ -1,0 +1,27 @@
+name: Dashboard
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+permissions:
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow requests icalendar recurring-ical-events
+      - run: python dashboard.py
+        env:
+          CALENDAR_URLS: ${{ secrets.CALENDAR_URLS }}
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
