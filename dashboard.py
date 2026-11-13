@@ -45,7 +45,7 @@ def afspraken(vandaag):
                 else:
                     items.append(("Hele dag", titel))
         except Exception as ex:
-            print("Agenda mislukt:", ex)
+            print("Agenda mislukt:", type(ex).__name__)
     return sorted(items, key=lambda x: ("0" if x[0] == "Hele dag" else x[0]))
 
 def verjaardagen(vandaag):
